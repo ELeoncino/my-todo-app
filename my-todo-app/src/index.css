@@ -91,7 +91,7 @@ form button {
   border-radius: 5px;
   font-size: 1rem;
   transition: transform 0.2s, background-color 0.3s, opacity 0.3s;
-  width: 100%;
+  width: 90%; /* Ensures the task item fits well within the container */
 }
 
 /* Assign different background colors to tasks */
@@ -104,7 +104,7 @@ form button {
 }
 
 .task-item:hover {
-  transform: scale(1.05); /* Expand on hover */
+  transform: scale(1.1); /* Expand on hover */
 }
 
 /* Checkbox Styling */
@@ -119,6 +119,7 @@ form button {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  text-align: left;
 }
 
 .name {
@@ -146,6 +147,7 @@ form button {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  align-items: flex-end;
 }
 
 /* Buttons */
@@ -157,18 +159,20 @@ form button {
   border: none;
   cursor: pointer;
   border-radius: 5px;
-  margin: 2px;
-  margin-left: 10px;
 }
 
 .edit-button {
   background-color: #4caf50; /* Green */
   color: white;
+  width: 70px;
+  margin-left: 15px;
 }
 
 .delete-button {
   background-color: #f44336; /* Red */
   color: white;
+  width: 70px;
+  margin-left: 15px;
 }
 
 .edit-button:hover {
