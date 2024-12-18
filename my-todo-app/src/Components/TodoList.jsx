@@ -3,16 +3,20 @@ import TodoItem from "./TodoItem";
 
 function TodoList({ todos, onToggle, onDelete, onEdit }) {
   return (
-    <div>
-      {todos.map((todo) => (
-        <TodoItem
-          key={todo.id}
-          todo={todo}
-          onToggle={onToggle}
-          onDelete={onDelete}
-          onEdit={onEdit}
-        />
-      ))}
+    <div className="todo-list">
+      {todos.length > 0 ? (
+        todos.map((todo) => (
+          <TodoItem
+            key={todo._id}
+            todo={todo}
+            onToggle={onToggle}
+            onDelete={onDelete}
+            onEdit={onEdit}
+          />
+        ))
+      ) : (
+        <p className="no-tasks">No hay tareas disponibles</p>
+      )}
     </div>
   );
 }

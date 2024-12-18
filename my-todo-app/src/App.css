@@ -1,42 +1,206 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/* General Styles */
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #0a3d62; /* Navy blue background */
+  color: #f1f2f6; /* Light text color */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* App Container */
+.app-container {
+  background-color: #1e272e; /* Darker background for app */
+  border-radius: 8px;
+  padding: 20px;
+  width: 90%;
+  max-width: 600px;
+  min-width: 600px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Header */
+h1 {
+  font-size: 2rem;
+  color: #ffd32a; /* Yellow color */
+  text-align: center;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+/* Form Styles */
+form.add-todo-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  margin-bottom: 10px;
+  background-color: #263d83; /* Dark blue background for form */
+  border-radius: 10px;
+  width: 80%;
+  align-items: center;
+}
+
+form input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+form input[type="text"]:focus {
+  border-color: #ffd32a; /* Highlight input on focus */
+  outline: none;
+}
+
+form button {
+  background-color: #ff4d4d; /* Red for add button */
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+form button:hover {
+  background-color: #e84118;
+}
+
+/* Reset Button */
+.reset-button {
+  background-color: #f44336; /* Red */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 20px;
+}
+
+.reset-button:hover {
+  background-color: #d32f2f; /* Darker red */
+}
+
+/* Task Item Styles */
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: transform 0.2s, background-color 0.3s, opacity 0.3s;
+  width: 90%;
+}
+
+/* Odd and Even Tasks */
+.task-item:nth-child(odd) {
+  background-color: #264653; /* Dark green for odd tasks */
+}
+
+.task-item:nth-child(even) {
+  background-color: #1e249d; /* Teal for even tasks */
+}
+
+.task-item:hover {
+  transform: scale(1.03);
+}
+
+/* Checkbox Styling */
+.task-item input[type="checkbox"] {
+  margin-right: 10px;
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+/* Text Content */
+.text-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+}
+
+.text-content .name {
+  color: #1f77b4; /* Blue for task name */
+  font-weight: bold;
+}
+
+.text-content .description {
+  color: #ff7f0e; /* Orange for description */
+  margin: 5px 0;
+}
+
+.text-content .creator {
+  color: #f1faee; /* General text white */
+  text-align: right;
+}
+
+.text-content .creator-name {
+  color: #07ea12; /* Green for creator name */
+  font-weight: bold;
+}
+
+/* Buttons */
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.edit-button,
+.delete-button {
+  width: 70px;
+  padding: 5px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.edit-button {
+  background-color: #4caf50; /* Green */
+  color: white;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.edit-button:hover {
+  background-color: #388e3c;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.delete-button {
+  background-color: #f44336; /* Red */
+  color: white;
 }
 
-.card {
-  padding: 2em;
+.delete-button:hover {
+  background-color: #d32f2f;
 }
 
-.read-the-docs {
-  color: #888;
+/* Completed Task Styling */
+.task-item.completed {
+  text-decoration: line-through;
+  opacity: 0.7;
+  background-color: #24d035; /* Light green for completed tasks */
+}
+
+/* No Tasks Message */
+.no-tasks {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #f1f2f6;
+  text-align: center;
+  margin-top: 20px;
 }

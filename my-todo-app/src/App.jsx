@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from "react";
 import TodoList from "./Components/TodoList";
 import AddTodoForm from "./Components/AddTodoForm";
+import "./App.css";
+import {
+  fetchTodos,
+  createTodo,
+  updateTodo,
+  deleteTodo as apiDeleteTodo,
+} from "./Services/Api";
 
 function App() {
   const [todos, setTodos] = useState([]);
   const [error, setError] = useState(null);
 
-  const fetchTodos = async () => {
+  // Obtener todas las tareas
+  const getTodos = async () => {
     try {
-      const response = await fetch("http://localhost:3001/todos");
-      if (!response.ok) {
-        throw new Error("Error al obtener las tareas.");
-      }
-      const data = await response.json();
+      const data = await fetchTodos();
       setTodos(data);
       setError(null);
     } catch (error) {
@@ -20,36 +24,28 @@ function App() {
     }
   };
 
+  // Agregar una nueva tarea
   const addTodo = async (newTodo) => {
-    const todo = {
-      id: Date.now().toString(),
-      ...newTodo,
-      isCompleted: false,
-    };
     try {
-      const response = await fetch("http://localhost:3001/todos", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(todo),
-      });
-      const savedTodo = await response.json();
+      const savedTodo = await createTodo({ ...newTodo, isCompleted: false });
       setTodos([...todos, savedTodo]);
     } catch (error) {
-      console.error("Error:", error.message);
+      console.error("Error al agregar la tarea:", error.message);
     }
   };
 
+  // Editar una tarea existente
   const editTodo = async (id) => {
-    const todoToEdit = todos.find((todo) => todo.id === id);
+    const todoToEdit = todos.find((todo) => todo._id === id);
+
+    // Solicitar los nuevos valores
     const newName =
       prompt("Editar nombre:", todoToEdit.name) || todoToEdit.name;
     const newDescription =
       prompt("Editar descripción:", todoToEdit.description) ||
       todoToEdit.description;
     const newCreator =
-      prompt("Editar creador:", todoToEdit.creator) || todoToEdit.creator;
+      prompt("Editar autor:", todoToEdit.creator) || todoToEdit.creator;
 
     const updatedTodo = {
       ...todoToEdit,
@@ -59,62 +55,45 @@ function App() {
     };
 
     try {
-      await fetch(`http://localhost:3001/todos/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedTodo),
-      });
-      setTodos(todos.map((todo) => (todo.id === id ? updatedTodo : todo)));
+      const savedTodo = await updateTodo(id, updatedTodo);
+      setTodos(todos.map((todo) => (todo._id === id ? savedTodo : todo)));
     } catch (error) {
-      console.error("Error:", error.message);
+      console.error("Error al editar la tarea:", error.message);
     }
   };
 
+  // Alternar el estado de completado
   const toggleTodoCompletion = async (id) => {
-    const todoToToggle = todos.find((todo) => todo.id === id);
+    const todoToToggle = todos.find((todo) => todo._id === id);
     const updatedTodo = {
       ...todoToToggle,
       isCompleted: !todoToToggle.isCompleted,
     };
 
     try {
-      await fetch(`http://localhost:3001/todos/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedTodo),
-      });
-      setTodos(todos.map((todo) => (todo.id === id ? updatedTodo : todo)));
+      const savedTodo = await updateTodo(id, updatedTodo);
+      setTodos(todos.map((todo) => (todo._id === id ? savedTodo : todo)));
     } catch (error) {
-      console.error("Error:", error.message);
+      console.error(
+        "Error al alternar el estado de completado:",
+        error.message
+      );
     }
   };
 
+  // Eliminar una tarea
   const deleteTodo = async (id) => {
     try {
-      await fetch(`http://localhost:3001/todos/${id}`, { method: "DELETE" });
-      setTodos(todos.filter((todo) => todo.id !== id));
+      await apiDeleteTodo(id);
+      setTodos(todos.filter((todo) => todo._id !== id));
     } catch (error) {
-      console.error("Error:", error.message);
+      console.error("Error al eliminar la tarea:", error.message);
     }
   };
 
-  const resetTodos = async () => {
-    try {
-      await fetch("http://localhost:3001/todos", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify([]),
-      });
-      setTodos([]);
-    } catch (error) {
-      console.error("Error:", error.message);
-    }
-  };
-
+  // Cargar las tareas al montar el componente
   useEffect(() => {
-    fetchTodos();
+    getTodos();
   }, []);
 
   return (
@@ -128,9 +107,6 @@ function App() {
         onDelete={deleteTodo}
         onEdit={editTodo}
       />
-      <button className="reset-button" onClick={resetTodos}>
-        Resetear Tareas
-      </button>
     </div>
   );
 }
